@@ -1,0 +1,62 @@
+#ifndef GRAPHICS_H
+#define GRAPHICS_H
+#include "stdint.h"
+
+typedef struct {
+    uint32_t flags;
+    uint32_t mem_lower;
+    uint32_t mem_upper;
+    uint32_t boot_device;
+    uint32_t cmdline;
+    uint32_t mods_count;
+    uint32_t mods_addr;
+    uint32_t syms[4];
+    uint32_t mmap_length;
+    uint32_t mmap_addr;
+    uint32_t drives_length;
+    uint32_t drives_addr;
+    uint32_t config_table;
+    uint32_t boot_loader_name;
+    uint32_t apm_table;
+    uint32_t vbe_control_info;
+    uint32_t vbe_mode_info;
+    uint16_t vbe_mode;
+    uint16_t vbe_interface_seg;
+    uint16_t vbe_interface_off;
+    uint16_t vbe_interface_len;
+    uint64_t framebuffer_addr;
+    uint32_t framebuffer_pitch;
+    uint32_t framebuffer_width;
+    uint32_t framebuffer_height;
+    uint8_t  framebuffer_bpp;
+    uint8_t  framebuffer_type;
+} __attribute__((packed)) multiboot_info_t;
+
+void init_graphics(uint64_t addr);
+int get_screen_width(void);
+int get_screen_height(void);
+
+void put_pixel(int x, int y, uint32_t color);
+uint32_t get_pixel(int x, int y);
+void put_pixel_alpha(int x, int y, uint32_t color, int alpha);
+void draw_rect(int x, int y, int w, int h, uint32_t color);
+void draw_rect_alpha(int x, int y, int w, int h, uint32_t color, int alpha);
+void clear_screen_gfx(uint32_t color);
+void draw_circle(int cx, int cy, int radius, uint32_t color);
+void draw_hline(int x, int y, int w, uint32_t color);
+
+void draw_rounded_rect(int x, int y, int w, int h, uint32_t color);
+void draw_rounded_rect_alpha(int x, int y, int w, int h, uint32_t color, int alpha);
+void draw_rounded_rect_border(int x, int y, int w, int h, uint32_t border_color, int alpha);
+
+void draw_gradient_bg(void);
+void draw_shadow(int x, int y, int w, int h, int layers);
+
+void save_mouse_bg(int x, int y);
+void restore_mouse_bg(int x, int y);
+void render_cursor_graphic(int x, int y);
+
+uint32_t* get_backbuf(void);
+void flip_buffer(void);
+
+#endif
